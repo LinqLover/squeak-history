@@ -1,11 +1,8 @@
 enumerating - raw
 messagesDo: workBlock
 
-	| directory |
 	self with: self mailingLists do: [:listName |
-		directory := FileDirectory on: self class archivePath, FileDirectory slash, listName.
-		directory assureExistence. "Necessary?"
-		directory fileEntries do: [:fileEntry |
+		self with: (self fileEntriesForList: listName) do: [:fileEntry |
 			SqhMBoxReadWriter onFileNamed: fileEntry fullName do: [:reader |
 				[reader atEnd] whileFalse: [
 					reader nextMessage in: [:mailMessage |
